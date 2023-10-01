@@ -3,6 +3,10 @@ import "./globals.css";
 import { Roboto } from "next/font/google";
 import * as React from "react";
 
+import Footer from "./components/footer";
+import Navbar from "./components/navbar";
+import ThemeRegistry from "./ThemeRegistry";
+
 import type { Metadata } from "next";
 const roboto = Roboto({ weight: ["300", "400", "700"], subsets: ["latin"] });
 
@@ -14,7 +18,13 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={roboto.className}>{children}</body>
+      <body className={`min-h-screen ${roboto.className}`}>
+        <ThemeRegistry options={{ key: "mui" }}>
+          <Navbar />
+          {children}
+          <Footer />
+        </ThemeRegistry>
+      </body>
     </html>
   );
 }
