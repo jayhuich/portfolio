@@ -1,9 +1,9 @@
 import * as React from "react";
 
-export default function Home() {
+export default function HomePage() {
   return (
     <main className="flex flex-col items-center justify-between p-10 gap-10">
-      <h1 className="text-3xl">hello world!</h1>
+      <h1 className="text-3xl font-bold">hello world!</h1>
       <p>
         Lorem, ipsum dolor sit amet consectetur adipisicing elit. Repellat, quidem perspiciatis
         recusandae error ipsam reiciendis ipsa sapiente neque eius veniam, consequuntur illum

@@ -14,7 +14,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 
-type Nav = {
+export type Nav = {
   name: string;
   href: string;
   icon: JSX.Element;
