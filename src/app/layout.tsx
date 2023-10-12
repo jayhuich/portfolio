@@ -3,8 +3,8 @@ import "./globals.css";
 import { Roboto } from "next/font/google";
 import * as React from "react";
 
-import Footer from "./components/footer";
-import Navbar from "./components/navbar";
+import Footer from "../components/footer";
+import Navbar from "../components/navbar";
 import ThemeRegistry from "./ThemeRegistry";
 
 import type { Metadata } from "next";
