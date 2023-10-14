@@ -1,3 +1,4 @@
 {
-  "importSorter.importStringConfiguration.quoteMark": "double"
+  "importSorter.importStringConfiguration.quoteMark": "double",
+  "importSorter.importStringConfiguration.tabSize": 2
 }
