@@ -29,7 +29,7 @@ export default function Navbar() {
   ];
   return (
     <>
-      <header className="w-screen h-16 sticky top-0 bg-slate-800">
+      <header className="w-full h-16 sticky top-0 z-10 bg-slate-800">
         <div className="flex md:hidden h-full mx-2">
           <IconButton onClick={() => setIsOpen(!isOpen)} className="my-auto">
             <MenuIcon />
@@ -47,7 +47,7 @@ export default function Navbar() {
           })}
         </ul>
       </header>
-      <div className={`${isOpen ? "flex" : "hidden"} fixed h-screen w-screen bg-slate-800`}>
+      <div className={`${isOpen ? "flex" : "hidden"} fixed z-10 h-screen w-screen bg-slate-800`}>
         <List component="nav" className="w-full">
           {navs.map((e, i) => {
             return (
