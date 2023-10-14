@@ -3,9 +3,10 @@ import "./globals.css";
 import { Roboto } from "next/font/google";
 import * as React from "react";
 
-import Footer from "../components/footer";
-import Navbar from "../components/navbar";
-import ThemeRegistry from "./ThemeRegistry";
+import Footer from "@/components/footer";
+import Navbar from "@/components/navbar";
+
+import ThemeRegistry from "./themeRegistry";
 
 import type { Metadata } from "next";
 const roboto = Roboto({ weight: ["300", "400", "700"], subsets: ["latin"] });
