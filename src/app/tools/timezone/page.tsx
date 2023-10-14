@@ -4,7 +4,9 @@ import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
 import * as React from "react";
 
-import { Button } from "@mui/material";
+import DatePicker from "@/components/datePicker";
+import TimePicker from "@/components/timePicker";
+import { Button, Paper, TextField } from "@mui/material";
 
 type Timezone = {
   tz: string;
@@ -15,23 +17,62 @@ export default function TimezonePage() {
   dayjs.extend(utc);
   dayjs.extend(timezone);
 
-  // for testing
-  const timezones: Timezone[] = [
+  const [timezones, setTimezones] = React.useState([
+    { tz: dayjs.tz.guess() },
     { tz: "America/Los_Angeles", city: "Seattle" },
     { tz: "Europe/London", city: "Glasgow" },
-    { tz: "Asia/Hong_Kong" },
-    { tz: dayjs.tz.guess() }
-  ];
+    { tz: "Asia/Hong_Kong" }
+  ] as Timezone[]);
+  const [newTimezone, setNewTimezone] = React.useState({ tz: "" } as Timezone);
 
   const [time, setTime] = React.useState(dayjs());
-  const increment = () => {
-    setTime((time) => time.add(1, "h"));
-  };
+
+  function addTimezone() {
+    try {
+      time.tz(newTimezone.tz);
+    } catch {
+      console.error("Not a valid time zone");
+    }
+    setTimezones([...timezones, newTimezone]);
+  }
 
   return (
-    <main className="flex flex-col items-center justify-between p-10 gap-10">
+    <main className="flex flex-col items-center justify-between px-4 md:px-10 py-10 gap-10">
       <h1 className="text-3xl font-bold">Timezone Converter</h1>
-      <div className="description">
+      <Paper elevation={1} className="p-4">
+        <div className="grid md:grid-cols-2 gap-4">
+          <div className="flex flex-auto justify-center md:justify-end">
+            <DatePicker value={time} onChange={(time) => time && setTime(time)} />
+          </div>
+          <div className="flex flex-auto justify-center md:justify-start">
+            <TimePicker value={time} onChange={(time) => time && setTime(time)} />
+          </div>
+        </div>
+      </Paper>
+      <div className="w-full grid md:grid-cols-3 gap-4">
+        <div className="flex justify-center md:justify-end">
+          <TextField
+            label={"Timezone (" + dayjs.tz.guess() + ")"}
+            value={newTimezone.tz}
+            onChange={(e) => setNewTimezone({ ...newTimezone, tz: e.target.value })}
+            variant="filled"
+            fullWidth
+          />
+        </div>
+        <div className="flex justify-center md:justify-start">
+          <TextField
+            label="City name (optional)"
+            value={newTimezone.city || ""}
+            onChange={(e) => setNewTimezone({ ...newTimezone, city: e.target.value })}
+            variant="filled"
+            fullWidth
+          />
+        </div>
+        <Button onClick={addTimezone} variant="contained">
+          Add timezone
+        </Button>
+      </div>
+      <Paper elevation={1} className="w-full p-4">
         {timezones.map((e, i) => {
           return (
             <div key={i} className="my-4">
@@ -41,11 +82,7 @@ export default function TimezonePage() {
             </div>
           );
         })}
-      </div>
-
-      <Button variant="outlined" onClick={increment}>
-        Add 1 Hour
-      </Button>
+      </Paper>
     </main>
   );
 }
