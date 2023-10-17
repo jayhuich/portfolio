@@ -66,7 +66,7 @@ export default function ThemeRegistry(props: ThemeRegistryProps) {
   return (
     <CacheProvider value={cache}>
       <ThemeProvider theme={darkTheme}>
-        <CssBaseline />
+        <CssBaseline enableColorScheme />
         {children}
       </ThemeProvider>
     </CacheProvider>
