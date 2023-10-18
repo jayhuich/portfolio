@@ -5,8 +5,9 @@ import utc from "dayjs/plugin/utc";
 import * as React from "react";
 
 import DatePicker from "@/components/datePicker";
+import SearchableSelect from "@/components/searchableSelect";
 import TimePicker from "@/components/timePicker";
-import { Button, Paper, TextField } from "@mui/material";
+import { Button, FormControl, InputLabel, Paper, TextField } from "@mui/material";
 
 type Timezone = {
   tz: string;
@@ -16,6 +17,8 @@ type Timezone = {
 export default function TimezonePage() {
   dayjs.extend(utc);
   dayjs.extend(timezone);
+
+  const allTimezones = Intl.supportedValuesOf("timeZone");
 
   const [timezones, setTimezones] = React.useState([
     { tz: dayjs.tz.guess() },
@@ -37,11 +40,11 @@ export default function TimezonePage() {
   }
 
   return (
-    <main className="flex flex-col items-center justify-between px-4 md:px-10 py-10 gap-10">
+    <main className="container flex flex-col items-center justify-between mx-auto px-4 md:px-10 py-10 gap-10">
       <h1 className="text-3xl font-bold">Timezone Converter</h1>
       <Paper elevation={1} className="p-4">
         <div className="grid md:grid-cols-2 gap-4">
-          <div className="flex flex-auto justify-center md:justify-end">
+          <div className="w-full md:w-auto flex flex-auto justify-center md:justify-end">
             <DatePicker value={time} onChange={(time) => time && setTime(time)} />
           </div>
           <div className="flex flex-auto justify-center md:justify-start">
@@ -49,18 +52,23 @@ export default function TimezonePage() {
           </div>
         </div>
       </Paper>
-      <div className="w-full grid md:grid-cols-3 gap-4">
+      <div className="w-full md:w-auto grid md:grid-cols-3 gap-4">
         <div className="flex justify-center md:justify-end">
-          <TextField
-            label={"Timezone (" + dayjs.tz.guess() + ")"}
-            value={newTimezone.tz}
-            onChange={(e) => setNewTimezone({ ...newTimezone, tz: e.target.value })}
-            variant="filled"
-            fullWidth
-          />
+          <FormControl variant="filled" fullWidth>
+            <InputLabel id="timezone-label">Timezone</InputLabel>
+            <SearchableSelect
+              id="timezone"
+              label="Timezone"
+              labelId="timezone-label"
+              options={allTimezones}
+              value={newTimezone.tz}
+              onChange={(e) => setNewTimezone({ ...newTimezone, tz: e.target.value as string })}
+            />
+          </FormControl>
         </div>
         <div className="flex justify-center md:justify-start">
           <TextField
+            id="city"
             label="City name (optional)"
             value={newTimezone.city || ""}
             onChange={(e) => setNewTimezone({ ...newTimezone, city: e.target.value })}
@@ -72,7 +80,7 @@ export default function TimezonePage() {
           Add timezone
         </Button>
       </div>
-      <Paper elevation={1} className="w-full p-4">
+      <Paper elevation={1} className=" p-4">
         {timezones.map((e, i) => {
           return (
             <div key={i} className="my-4">
