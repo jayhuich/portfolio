@@ -7,7 +7,8 @@ import * as React from "react";
 import DatePicker from "@/components/datePicker";
 import SearchableSelect from "@/components/searchableSelect";
 import TimePicker from "@/components/timePicker";
-import { Button, FormControl, InputLabel, Paper, TextField } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import { Button, FormControl, IconButton, InputLabel, Paper, TextField } from "@mui/material";
 
 type Timezone = {
   tz: string;
@@ -17,32 +18,35 @@ type Timezone = {
 export default function TimezonePage() {
   dayjs.extend(utc);
   dayjs.extend(timezone);
+  function tzToCity(tz: string) {
+    return tz.split("/").pop()?.replaceAll("_", " ");
+  }
 
   const allTimezones = Intl.supportedValuesOf("timeZone");
 
-  const [timezones, setTimezones] = React.useState([
-    { tz: dayjs.tz.guess() },
-    { tz: "America/Los_Angeles", city: "Seattle" },
-    { tz: "Europe/London", city: "Glasgow" },
-    { tz: "Asia/Hong_Kong" }
-  ] as Timezone[]);
+  const [timezones, setTimezones] = React.useState([{ tz: dayjs.tz.guess() }] as Timezone[]);
   const [newTimezone, setNewTimezone] = React.useState({ tz: "" } as Timezone);
 
   const [time, setTime] = React.useState(dayjs());
+  const [currentTimezone, setCurrentTimezone] = React.useState(dayjs.tz.guess());
 
   function addTimezone() {
-    try {
-      time.tz(newTimezone.tz);
-    } catch {
-      console.error("Not a valid time zone");
-    }
+    if (newTimezone.tz == "") return;
+    time.tz(newTimezone.tz);
     setTimezones([...timezones, newTimezone]);
+    setNewTimezone({ tz: "" } as Timezone);
+  }
+
+  function updateDisplayedTime(tz: string) {
+    setCurrentTimezone(tz);
+    setTime(dayjs().tz(tz));
   }
 
   return (
     <main className="container flex flex-col items-center justify-between mx-auto px-4 md:px-10 py-10 gap-10">
       <h1 className="text-3xl font-bold">Timezone Converter</h1>
       <Paper elevation={1} className="p-4">
+        <div className="">Current timezone: {tzToCity(currentTimezone)}</div>
         <div className="grid md:grid-cols-2 gap-4">
           <div className="w-full md:w-auto flex flex-auto justify-center md:justify-end">
             <DatePicker value={time} onChange={(time) => time && setTime(time)} />
@@ -84,9 +88,19 @@ export default function TimezonePage() {
         {timezones.map((e, i) => {
           return (
             <div key={i} className="my-4">
-              <p>City: {e.city || e.tz.split("/").pop()?.replaceAll("_", " ")}</p>
-              <p>Timezone: {e.tz}</p>
-              <p>Time: {time.tz(e.tz).format("(ddd), MMM D, YYYY HH:mm A")}</p>
+              <Button onClick={() => updateDisplayedTime(e.tz)}>
+                <div>
+                  <p>City: {e.city || tzToCity(e.tz)}</p>
+                  <p>Time: {time.tz(e.tz).format("(ddd), MMM D, YYYY HH:mm A")}</p>
+                </div>
+              </Button>
+              <IconButton
+                onClick={() =>
+                  setTimezones(timezones.filter((ee) => ee.city != e.city || ee.tz != e.tz))
+                }
+              >
+                <CloseIcon />
+              </IconButton>
             </div>
           );
         })}
