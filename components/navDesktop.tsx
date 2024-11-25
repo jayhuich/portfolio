@@ -26,7 +26,7 @@ export const links = [
   },
 ];
 
-const Nav = () => {
+const NavDesktop = () => {
   const pathname = usePathname();
   return (
     <nav className="flex gap-8">
@@ -45,4 +45,4 @@ const Nav = () => {
   );
 };
 
-export default Nav;
+export default NavDesktop;

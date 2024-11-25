@@ -11,9 +11,9 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 
-import { links } from "./Nav";
+import { links } from "./navDesktop";
 
-const MobileNav = () => {
+const NavMobile = () => {
   const pathname = usePathname();
   return (
     <Sheet>
@@ -46,4 +46,4 @@ const MobileNav = () => {
   );
 };
 
-export default MobileNav;
+export default NavMobile;
