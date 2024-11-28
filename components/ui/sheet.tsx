@@ -1,7 +1,7 @@
 "use client";
 
 import { cva, VariantProps } from "class-variance-authority";
-import * as React from "react";
+import React from "react";
 import { IoMdClose } from "react-icons/io";
 
 import { cn } from "@/lib/utils";
